@@ -24,7 +24,6 @@ resource "aws_key_pair" "ops-vault" {
 }
 
 resource "aws_eip" "vault" {
-  instance    = "${aws_instance.vault}"
   vpc         = true
 
   tags = {
@@ -54,6 +53,12 @@ resource "aws_instance" "vault" {
     ManagedBy = "terraform"
     TFRepo = "${var.repository}"
   }
+}
+
+# A separate EIP association is used to prevent a cyclic dependency
+resource "aws_eip_association" "vault" {
+  instance_id = "${aws_instance.vault.id}"
+  allocation_id = "${aws_eip.vault.id}"
 }
 
 resource "aws_ebs_volume" "vault" {
