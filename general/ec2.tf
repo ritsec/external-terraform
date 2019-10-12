@@ -20,7 +20,7 @@ data "aws_ami" "ubuntu_bionic" {
 
 resource "aws_key_pair" "ops-vault" {
   key_name		= "ops-vault"
-  public_key  = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE3yUw+Tz9mEFOUKdSCWXeQImrCtnExnpe4oV8g+LCGo RITSEC Ops - Vault"
+  public_key  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC63aiIX37c4t0kteCP1lT4xS2SIi/EUIhyfvTozME5QeCyXKAvj1HTNslVvYdlLBGzV4dtf9DC8XF9nWmgV1MMqN+5zacbDdeQoYkmM0GYROPwX0sIVmMLHFcTSRuuyNfzuaWr9yznnsi5Ap9ND52EahrYF/XW+z1+8z3bS7Po11ar6xmmhNkUXLVJ1KRW7CmJ9unv201E+sJiW0pVvBQP88GtCx/yWSsZ9wkVRD9qe27AoGACQwZ8Uxl3Emil644RsKiE1fXIX/Ris1zoc9Sy85/7P/X8SAlmamItXUajUEsXnOFpd2wgm0TspkISZZnzEyttLRgdO1N1Cnosid4r RITSEC Ops - Vault"
 }
 
 resource "aws_eip" "vault" {
@@ -40,11 +40,11 @@ resource "aws_instance" "vault" {
   disable_api_termination = "${var.prevent-termination}"
   key_name = "${aws_key_pair.ops-vault.key_name}"
   vpc_security_group_ids = [
-    "${aws_security_group.default.id}",
+    "${aws_security_group.standard.id}",
     "${aws_security_group.https.id}",
   ]
   subnet_id = "${aws_default_subnet.default-az1.id}"
-  private_ip = "172.31.0.1"
+  private_ip = "172.31.0.10"
   user_data_base64 = "${data.template_cloudinit_config.vault.rendered}"
 
   tags = {

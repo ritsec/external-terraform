@@ -76,8 +76,8 @@ resource "aws_default_subnet" "default-az6" {
   }
 }
 
-resource "aws_security_group" "default" {
-  name = "default"
+resource "aws_security_group" "standard" {
+  name = "standard"
   description = "Security group for all instances deployed in the default VPC."
   vpc_id = "${aws_default_vpc.default.id}"
 
@@ -89,14 +89,15 @@ resource "aws_security_group" "default" {
   }
 }
 
-resource "aws_security_group_rule" "high-ssh" {
+resource "aws_security_group_rule" "public-high-ssh" {
   type = "ingress"
   protocol = "tcp"
   from_port = 65432
   to_port = 65432
+  cidr_blocks = ["0.0.0.0/0"]
   description = "Allows external traffic to SSH on a high port."
 
-  security_group_id = "${aws_security_group.default.id}"
+  security_group_id = "${aws_security_group.standard.id}"
 }
 
 resource "aws_security_group_rule" "egress" {
@@ -104,9 +105,10 @@ resource "aws_security_group_rule" "egress" {
   protocol = "all"
   from_port = 0
   to_port = 65535
+  cidr_blocks = ["0.0.0.0/0"]
   description = "Allows egress traffic anywhere."
 
-  security_group_id = "${aws_security_group.default.id}"
+  security_group_id = "${aws_security_group.standard.id}"
 }
 
 resource "aws_security_group" "https" {
@@ -122,11 +124,12 @@ resource "aws_security_group" "https" {
   }
 }
 
-resource "aws_security_group_rule" "https" {
+resource "aws_security_group_rule" "public-https" {
   type = "ingress"
   protocol = "tcp"
   from_port = 443
   to_port = 443
+  cidr_blocks = ["0.0.0.0/0"]
   description = "Allows external traffic to HTTPS."
 
   security_group_id = "${aws_security_group.https.id}"
