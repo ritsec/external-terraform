@@ -79,7 +79,7 @@ resource "aws_default_subnet" "default-az6" {
 resource "aws_security_group" "default" {
   name = "default"
   description = "Security group for all instances deployed in the default VPC."
-  vpc_id = "${aws_default_vpc.default}"
+  vpc_id = "${aws_default_vpc.default.id}"
 
   tags = {
     Name = "default"
@@ -96,7 +96,7 @@ resource "aws_security_group_rule" "high-ssh" {
   to_port = 65432
   description = "Allows external traffic to SSH on a high port."
 
-  security_group_id = "${aws_security_group.default}"
+  security_group_id = "${aws_security_group.default.id}"
 }
 
 resource "aws_security_group_rule" "egress" {
@@ -106,13 +106,13 @@ resource "aws_security_group_rule" "egress" {
   to_port = 65535
   description = "Allows egress traffic anywhere."
 
-  security_group_id = "${aws_security_group.default}"
+  security_group_id = "${aws_security_group.default.id}"
 }
 
 resource "aws_security_group" "https" {
   name = "https"
   description = "Allow HTTPS traffic"
-  vpc_id = "${aws_default_vpc.default}"
+  vpc_id = "${aws_default_vpc.default.id}"
 
   tags = {
     Name = "https"
@@ -129,5 +129,5 @@ resource "aws_security_group_rule" "https" {
   to_port = 443
   description = "Allows external traffic to HTTPS."
 
-  security_group_id = "${aws_security_group.https}"
+  security_group_id = "${aws_security_group.https.id}"
 }
