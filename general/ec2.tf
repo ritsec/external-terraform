@@ -41,7 +41,7 @@ resource "aws_instance" "vault" {
   key_name = "${aws_key_pair.ops-vault.key_name}"
   vpc_security_group_ids = [
     "${aws_security_group.standard.id}",
-    "${aws_security_group.https.id}",
+    "${aws_security_group.vault.id}",
   ]
   subnet_id = "${aws_default_subnet.default-az1.id}"
   private_ip = "172.31.0.10"

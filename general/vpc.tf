@@ -111,26 +111,26 @@ resource "aws_security_group_rule" "egress" {
   security_group_id = "${aws_security_group.standard.id}"
 }
 
-resource "aws_security_group" "https" {
+resource "aws_security_group" "vault" {
   name = "https"
-  description = "Allow HTTPS traffic"
+  description = "Allow HashiCorp Vault traffic."
   vpc_id = "${aws_default_vpc.default.id}"
 
   tags = {
-    Name = "https"
+    Name = "vault"
     Owner = "operations-program"
     ManagedBy = "terraform"
     TFRepo = "${var.repository}"
   }
 }
 
-resource "aws_security_group_rule" "public-https" {
+resource "aws_security_group_rule" "public-vault" {
   type = "ingress"
   protocol = "tcp"
-  from_port = 443
-  to_port = 443
+  from_port = 8200
+  to_port = 8200
   cidr_blocks = ["0.0.0.0/0"]
-  description = "Allows external traffic to HTTPS."
+  description = "Allows external traffic to the default HashiCorp Vault port."
 
-  security_group_id = "${aws_security_group.https.id}"
+  security_group_id = "${aws_security_group.vault.id}"
 }
