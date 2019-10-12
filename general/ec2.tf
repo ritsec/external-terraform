@@ -46,6 +46,7 @@ resource "aws_instance" "vault" {
   ]
   subnet_id = "${aws_default_subnet.default-az1.id}"
   private_id = "172.31.0.1"
+  user_data_base64 = "${data.template_cloudinit_config.vault.rendered}"
 
   tags = {
     Name = "vault"

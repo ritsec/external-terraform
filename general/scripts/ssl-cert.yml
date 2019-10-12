@@ -1,0 +1,10 @@
+#cloud-config
+write_files:
+  - content: "${certificate}"
+    path: "${certificate_path}"
+    owner: "root"
+    permissions: "0600"
+  - content: "${key}"
+    path: "${key_path}"
+    owner: "root"
+    permissions: "0600"
