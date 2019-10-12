@@ -4,13 +4,5 @@ variable "repository" {
 }
 
 variable "prevent-termination" {
-  default = true
-}
-
-variable "bootstrap-script" {
-  default = <<EOF
-#!/bin/bash
-sed -i 's/#Port 22/Port 65432/g' /etc/ssh/sshd_config
-systemctl restart sshd
-EOF
+  default = false
 }
