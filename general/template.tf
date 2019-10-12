@@ -13,7 +13,7 @@ data "template_file" "ebs-volume" {
 }
 
 data "template_file" "vault-cert" {
-  template = "${file("${path.cwd}/scripts/ssl-cert.yml")}"
+  template = "${file("${path.cwd}/scripts/ssl-cert.sh")}"
   vars = {
     certificate = "${acme_certificate.vault.certificate_pem}"
     certificate_path = "/etc/ssl/certs/vault-cert.pem"
@@ -39,8 +39,8 @@ data "template_cloudinit_config" "vault" {
   }
 
   part {
-    filename = "ssl-cert.yml"
-    content_type = "text/cloud-config"
+    filename = "ssl-cert.sh"
+    content_type = "text/x-shellscript"
     content = "${data.template_file.vault-cert.rendered}"
   }
 }
