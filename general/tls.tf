@@ -12,7 +12,7 @@ resource "tls_cert_request" "vault" {
   key_algorithm = "RSA"
   private_key_pem = "${tls_private_key.vault.private_key_pem}"
 
-  subject = {
+  subject {
     common_name = "${aws_route53_record.vault.fqdn}"
     organization = "RITSEC"
     organizational_unit = "Operations Program"
